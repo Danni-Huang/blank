@@ -11,15 +11,13 @@
 
     let _quotesLastModified = new Date(1970, 0, 1);
 
-    let _quotesUrl = null;
     let _quotesApiHome = 'https://localhost:7014/quote-api';
+    let _quotesUrl = null;
     let _tagsUrl = null;
     let _likeUrl = null;
-    let _editQuotesUrl = null;
-    let _getQuoteByIdUrl = null;
+    let _quoteByIdUrl = null;
     let _quotesByRankUrl = null;
     let _tagQuoteUrl = null;
-    let _postTagUrl = null;
 
     // this method will call api home page at startup & set the quotes URL
     let loadBaseApiInfo = async function () {
@@ -36,12 +34,10 @@
 
             _quotesUrl = links['quotes'].href;
             _tagsUrl = links['tags'].href;
-            _getQuoteByIdUrl = links['getQuoteById'].href;
-            _editQuotesUrl = links['editQuotes'].href;
+            _quoteByIdUrl = links['quoteById'].href;
             _likeUrl = links['like'].href;
             _quotesByRankUrl = links['quotesByRank'].href;
             _tagQuoteUrl = links['tagQuote'].href;
-            _postTagUrl = links['postTags'].href;
 
         } else {
             _quoteItemsMsg.text('Hmmmm, there was a problem accessing the quotes API.');
@@ -53,6 +49,7 @@
 
     var loadTags = async function (id = '#quoteTag') {
         let _quoteTag = $(id);
+        _quoteTag.empty();
         const resp = await fetch(_tagsUrl, {
             mode: 'cors',
             headers: {
@@ -153,7 +150,7 @@
             name: $('#tagName').val()
         };
 
-        let resp = await fetch(_postTagUrl, {
+        let resp = await fetch(_tagsUrl, {
             mode: "cors",
             method: 'POST',
             headers: {
@@ -179,7 +176,7 @@
         const selectedQuoteId = $('#selectedQuoteId').val();
 
         if (selectedQuoteId) {
-            const urlWithId = _getQuoteByIdUrl.replace('{id}', selectedQuoteId);
+            const urlWithId = _quoteByIdUrl.replace('{id}', selectedQuoteId);
 
             let resp = await fetch(urlWithId, {
                 mode: "cors",
@@ -205,7 +202,7 @@
 
     $('#confirmUpdateBtn').click(async function () {
         const selectedQuoteId = $('#selectedQuoteId').val();
-        const urlWithId = _editQuotesUrl.replace('{id}', selectedQuoteId);
+        const urlWithId = _quoteByIdUrl.replace('{id}', selectedQuoteId);
 
         const updatedContent = $('#editQuoteContent').val();
         const updatedAuthor = $('#editQuoteAuthor').val();

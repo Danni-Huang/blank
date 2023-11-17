@@ -72,8 +72,51 @@ namespace QuotesApp.Models
                     QuoteId = 6,
                     Content = "Opportunities don't happen, you create them.",
                     Author = "Chris Grosser"
+                },
+                new Quote
+                {
+                    QuoteId = 7,
+                    Content = "If you're going through hell keep going.",
+                    Author = "Winston Churchill"
+                },
+                new Quote
+                {
+                    QuoteId = 8,
+                    Content = "Don't raise your voice, improve your argument.",
+                    Author = "Anonymous"
+                },
+                new Quote
+                {
+                    QuoteId = 9,
+                    Content = "Do one thing every day that scares you.",
+                    Author = "Anonymous"
+                },
+                new Quote
+                {
+                    QuoteId = 10,
+                    Content = "Life is not about finding yourself. Life is about creating yourself.",
+                    Author = "Lolly Daskal"
                 }
                 );
+
+            modelBuilder.Entity<Tag>().HasData(
+                new Tag { TagId = 1, Name = "Funny" },
+                new Tag { TagId = 2, Name = "Philosophical" },
+                new Tag { TagId = 3, Name = "Serious" },
+                new Tag { TagId = 4, Name = "Educational" },
+                new Tag { TagId = 5, Name = "Motivational" }
+                );
+
+            modelBuilder.Entity<Like>().HasData(
+            new Like { LikeId = 1, UserId = 123, QuoteId = 8 },
+            new Like { LikeId = 2, UserId = 123, QuoteId = 8 },
+            new Like { LikeId = 3, UserId = 123, QuoteId = 8 },
+            new Like { LikeId = 4, UserId = 123, QuoteId = 8 },
+            new Like { LikeId = 5, UserId = 123, QuoteId = 2 },
+            new Like { LikeId = 6, UserId = 123, QuoteId = 2 },
+            new Like { LikeId = 7, UserId = 123, QuoteId = 4 }
+            );
+
         }
 
     }

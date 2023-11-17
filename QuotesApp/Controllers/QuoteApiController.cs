@@ -26,13 +26,11 @@ namespace QuotesApp.Controllers
                 {
                     { "self", new Link() { Rel = "self", Href = GnerateFullUrl("/quote-api") } },
                     { "quotes", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes") } },
-                    { "editQuotes", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes/{id}"), Method = "PUT" } },
-                    { "getQuoteById", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes/{id}") } },
+                    { "quoteById", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes/{id}") } },
                     { "tags", new Link() { Rel = "tags", Href = GnerateFullUrl("/tags") } },
                     { "like", new Link() { Rel = "like", Href = GnerateFullUrl("/quote/{id}/like"), Method = "POST" } },
                     { "quotesByRank", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes/rank") } },
-                    { "tagQuote", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quote/{quoteId}/tag/{tagId}") } },
-                    { "postTags", new Link() { Rel = "tags", Href = GnerateFullUrl("/tags"), Method = "POST" } }
+                    { "tagQuote", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quote/{quoteId}/tag/{tagId}"), Method = "POST" } }
                 },
                 Version = "1.0",
                 Creator = "Danni Huang"           
@@ -50,7 +48,7 @@ namespace QuotesApp.Controllers
                 var quotes = await _quoteContext.Quotes
                     .Include(t => t.TagAssignments)
                     .Include(t => t.Likes)
-                    .ToListAsync();
+                    .ToListAsync();               
 
                 List<QuotesResponse> quotesResponse = quotes.Select(q => new QuotesResponse
                 {
@@ -150,6 +148,12 @@ namespace QuotesApp.Controllers
             {
                 return BadRequest("Invalid request data.");
             }
+
+            if (newQuoteRequest.Author == null || String.IsNullOrEmpty(newQuoteRequest.Author))
+            {
+                newQuoteRequest.Author = "Anonymous";
+            }
+
             Quote quote = new Quote()
             {
                 Content = newQuoteRequest.Content,
@@ -303,11 +307,11 @@ namespace QuotesApp.Controllers
             return Ok(viewModel);
         }
 
-        [HttpPost("/quote/{id}/tag/{tagId}")]
-        public async Task<IActionResult> AddTagWithQuote(int id, int tagId)
+        [HttpPost("/quote/{quoteId}/tag/{tagId}")]
+        public async Task<IActionResult> AddTagWithQuote(int quoteId, int tagId)
         {
             // find the quote
-            Quote quote = await _quoteContext.Quotes.FirstOrDefaultAsync(q => q.QuoteId == id);
+            Quote quote = await _quoteContext.Quotes.FirstOrDefaultAsync(q => q.QuoteId == quoteId);
 
             if (quote == null)
             {
@@ -323,7 +327,7 @@ namespace QuotesApp.Controllers
             }
 
             // check if the tag is already assigned to Quote
-            bool tagAlreadyAssigned = await _quoteContext.TagAssignments.AnyAsync(ta => ta.QuoteId == id && ta.TagId == tagId);
+            bool tagAlreadyAssigned = await _quoteContext.TagAssignments.AnyAsync(ta => ta.QuoteId == quoteId && ta.TagId == tagId);
 
             if (tagAlreadyAssigned) 
             {
@@ -333,7 +337,7 @@ namespace QuotesApp.Controllers
             // create a new TagAssignment
             TagAssignment tagAssignment = new TagAssignment
             {
-                QuoteId = id,
+                QuoteId = quoteId,
                 TagId = tagId
             };
 

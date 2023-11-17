@@ -12,7 +12,7 @@ using QuotesApp.Models;
 namespace QuotesApp.Migrations
 {
     [DbContext(typeof(QuoteContext))]
-    [Migration("20231115020222_Initial")]
+    [Migration("20231117031331_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -44,6 +44,50 @@ namespace QuotesApp.Migrations
                     b.HasIndex("QuoteId");
 
                     b.ToTable("Like");
+
+                    b.HasData(
+                        new
+                        {
+                            LikeId = 1,
+                            QuoteId = 8,
+                            UserId = 123
+                        },
+                        new
+                        {
+                            LikeId = 2,
+                            QuoteId = 8,
+                            UserId = 123
+                        },
+                        new
+                        {
+                            LikeId = 3,
+                            QuoteId = 8,
+                            UserId = 123
+                        },
+                        new
+                        {
+                            LikeId = 4,
+                            QuoteId = 8,
+                            UserId = 123
+                        },
+                        new
+                        {
+                            LikeId = 5,
+                            QuoteId = 2,
+                            UserId = 123
+                        },
+                        new
+                        {
+                            LikeId = 6,
+                            QuoteId = 2,
+                            UserId = 123
+                        },
+                        new
+                        {
+                            LikeId = 7,
+                            QuoteId = 4,
+                            UserId = 123
+                        });
                 });
 
             modelBuilder.Entity("QuotesApp.Models.Quote", b =>
@@ -74,42 +118,70 @@ namespace QuotesApp.Migrations
                             QuoteId = 1,
                             Author = "John Wooden",
                             Content = "Things work out best for those who make the best of how things work out.",
-                            LastModified = new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2008)
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(444)
                         },
                         new
                         {
                             QuoteId = 2,
                             Author = "Jim Rohn",
                             Content = "If you are not willing to risk the usual you will have to settle for the ordinary.",
-                            LastModified = new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2096)
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(542)
                         },
                         new
                         {
                             QuoteId = 3,
                             Author = "Walt Disney",
                             Content = "All our dreams can come true if we have the courage to pursue them.",
-                            LastModified = new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2099)
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(546)
                         },
                         new
                         {
                             QuoteId = 4,
                             Author = "Winston Churchill",
                             Content = "Success is walking from failure to failure with no loss of enthusiasm.",
-                            LastModified = new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2101)
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(549)
                         },
                         new
                         {
                             QuoteId = 5,
                             Author = "Proverb",
                             Content = "Just when the caterpillar thought the world was ending, he turned into a butterfly.",
-                            LastModified = new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2104)
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(552)
                         },
                         new
                         {
                             QuoteId = 6,
                             Author = "Chris Grosser",
                             Content = "Opportunities don't happen, you create them.",
-                            LastModified = new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2106)
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(555)
+                        },
+                        new
+                        {
+                            QuoteId = 7,
+                            Author = "Winston Churchill",
+                            Content = "If you're going through hell keep going.",
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(557)
+                        },
+                        new
+                        {
+                            QuoteId = 8,
+                            Author = "Anonymous",
+                            Content = "Don't raise your voice, improve your argument.",
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(560)
+                        },
+                        new
+                        {
+                            QuoteId = 9,
+                            Author = "Anonymous",
+                            Content = "Do one thing every day that scares you.",
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(563)
+                        },
+                        new
+                        {
+                            QuoteId = 10,
+                            Author = "Lolly Daskal",
+                            Content = "Life is not about finding yourself. Life is about creating yourself.",
+                            LastModified = new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(566)
                         });
                 });
 
@@ -128,6 +200,33 @@ namespace QuotesApp.Migrations
                     b.HasKey("TagId");
 
                     b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            TagId = 1,
+                            Name = "Funny"
+                        },
+                        new
+                        {
+                            TagId = 2,
+                            Name = "Philosophical"
+                        },
+                        new
+                        {
+                            TagId = 3,
+                            Name = "Serious"
+                        },
+                        new
+                        {
+                            TagId = 4,
+                            Name = "Educational"
+                        },
+                        new
+                        {
+                            TagId = 5,
+                            Name = "Motivational"
+                        });
                 });
 
             modelBuilder.Entity("QuotesApp.Models.TagAssignment", b =>

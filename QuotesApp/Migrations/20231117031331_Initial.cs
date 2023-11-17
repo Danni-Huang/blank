@@ -103,12 +103,42 @@ namespace QuotesApp.Migrations
                 columns: new[] { "QuoteId", "Author", "Content", "LastModified" },
                 values: new object[,]
                 {
-                    { 1, "John Wooden", "Things work out best for those who make the best of how things work out.", new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2008) },
-                    { 2, "Jim Rohn", "If you are not willing to risk the usual you will have to settle for the ordinary.", new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2096) },
-                    { 3, "Walt Disney", "All our dreams can come true if we have the courage to pursue them.", new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2099) },
-                    { 4, "Winston Churchill", "Success is walking from failure to failure with no loss of enthusiasm.", new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2101) },
-                    { 5, "Proverb", "Just when the caterpillar thought the world was ending, he turned into a butterfly.", new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2104) },
-                    { 6, "Chris Grosser", "Opportunities don't happen, you create them.", new DateTime(2023, 11, 14, 21, 2, 22, 270, DateTimeKind.Local).AddTicks(2106) }
+                    { 1, "John Wooden", "Things work out best for those who make the best of how things work out.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(444) },
+                    { 2, "Jim Rohn", "If you are not willing to risk the usual you will have to settle for the ordinary.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(542) },
+                    { 3, "Walt Disney", "All our dreams can come true if we have the courage to pursue them.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(546) },
+                    { 4, "Winston Churchill", "Success is walking from failure to failure with no loss of enthusiasm.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(549) },
+                    { 5, "Proverb", "Just when the caterpillar thought the world was ending, he turned into a butterfly.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(552) },
+                    { 6, "Chris Grosser", "Opportunities don't happen, you create them.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(555) },
+                    { 7, "Winston Churchill", "If you're going through hell keep going.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(557) },
+                    { 8, "Anonymous", "Don't raise your voice, improve your argument.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(560) },
+                    { 9, "Anonymous", "Do one thing every day that scares you.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(563) },
+                    { 10, "Lolly Daskal", "Life is not about finding yourself. Life is about creating yourself.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(566) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "TagId", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Funny" },
+                    { 2, "Philosophical" },
+                    { 3, "Serious" },
+                    { 4, "Educational" },
+                    { 5, "Motivational" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Like",
+                columns: new[] { "LikeId", "QuoteId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 8, 123 },
+                    { 2, 8, 123 },
+                    { 3, 8, 123 },
+                    { 4, 8, 123 },
+                    { 5, 2, 123 },
+                    { 6, 2, 123 },
+                    { 7, 4, 123 }
                 });
 
             migrationBuilder.CreateIndex(
