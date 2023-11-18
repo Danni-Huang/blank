@@ -9,11 +9,11 @@
 <div class="row">
     <div class="col-sm-12 col-md-6">
         <h4>All Quotes:</h4>
-        <ul id="quotesList">
+        <ul id="quotesList" style="background-color: #f8f9fa">
             
         </ul>
         <p id="quoteItemsMsg"></p>
-
+        <br />
         <hr class="border border-secondary border-3 opacity-75">
 
         <h4>Edit a Quote:</h4>
@@ -21,7 +21,7 @@
         <input type="text" id="selectedQuoteId" name="selectedQuoteId" class="form-control" />
         <button type="button" id="editQuoteBtn" class="btn btn-primary">Edit Quote</button>
 
-        <form id="editQuoteForm" style="display: none;">
+        <form id="editQuoteForm" style="display: none; background-color: #dee2e6;">
 
             <h4>Edit a Quote:</h4>
             <div class="form-group">
@@ -43,6 +43,7 @@
         </form>
         <p id="confirmUpdatedQuoteMsg"></p>
 
+        <br />
         <hr class="border border-secondary border-3 opacity-75">
 
         <p></p>
@@ -73,18 +74,22 @@
         </form>
         <p id="newQuoteMsg"></p>
 
+        <br />
         <hr class="border border-secondary border-3 opacity-75">
 
-        <h4>Add a new Tag:</h4>
-        <form>
-            <div class="form-group">
-                <input type="text" id="tagName" name="tagName" class="form-control" />
-            </div>
+        <div style="background-color: #dee2e6">
+            <h4>Add a new Tag:</h4>
+            <form>
+                <div class="form-group">
+                    <input type="text" id="tagName" name="tagName" class="form-control" />
+                </div>
 
-            <button type="button" id="addTagBtn" class="btn btn-primary">Add tag</button>
-        </form>
-        <p id="newTagMsg"></p>
+                <button type="button" id="addTagBtn" class="btn btn-primary">Add tag</button>
+            </form>
+            <p id="newTagMsg"></p>
+        </div>
 
+        <br />
         <hr class="border border-secondary border-3 opacity-75">
 
         <p></p>
@@ -92,7 +97,7 @@
         <ul id="quotesByTag">
         </ul>
 
-        <label for=""><b>Tag Name:</b></label>
+        <label for=""><b>All Current Tags:</b></label>
         <select id="quoteTag" name="quoteTag" class="form-control">
             <option value="">Select a Tag</option>
         </select>

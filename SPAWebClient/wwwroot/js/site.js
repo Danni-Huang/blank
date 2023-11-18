@@ -18,6 +18,7 @@
     let _quoteByIdUrl = null;
     let _quotesByRankUrl = null;
     let _tagQuoteUrl = null;
+    let _removeTagWithQuoteUrl = null;
 
     // this method will call api home page at startup & set the quotes URL
     let loadBaseApiInfo = async function () {
@@ -38,6 +39,7 @@
             _likeUrl = links['like'].href;
             _quotesByRankUrl = links['quotesByRank'].href;
             _tagQuoteUrl = links['tagQuote'].href;
+            _removeTagWithQuoteUrl = links['removeTagWithQuote'].href;
 
         } else {
             _quoteItemsMsg.text('Hmmmm, there was a problem accessing the quotes API.');
@@ -49,18 +51,19 @@
 
     var loadTags = async function (id = '#quoteTag') {
         let _quoteTag = $(id);
-        _quoteTag.empty();
+        //_quoteTag.empty();
+        $(id + ' option:not(:first)').remove();
         const resp = await fetch(_tagsUrl, {
             mode: 'cors',
             headers: {
                 'Accept': 'application/json'
             }
         });
-
+        
         if (resp.status === 200) {
             const tags = await resp.json();
             console.log(tags)
-            for (let i = 0; i < tags.length; i++) {
+            for (let i = 0; i < tags.length; i++) {          
                 _quoteTag.append(`<option value=\"${tags[i].tagId}\">${tags[i].name}</option>`);
             }
         } else {
@@ -189,8 +192,12 @@
                 const quoteDetails = await resp.json();
 
                 for (const tag of quoteDetails.tags) {
-                    _existingTags.append(`<span class="badge text-bg-dark">${tag}</span>  `)
+                    _existingTags.append(`<span data-tag-name="${tag}" class="badge bg-success">${tag} 
+                                            <button type="button" class="btn-close" aria-label="Close" style="color: white;"></button>
+                                            </span>`)
+                    console.log(quoteDetails);
                 }
+               
                 $('#editQuoteContent').val(quoteDetails.content);
                 $('#editQuoteAuthor').val(quoteDetails.author);
                 // $('#quoteTag').val(quoteDetails.tag);
@@ -232,11 +239,13 @@
                 }
             });
             console.log(url, response.status)
+            _confirmUpdatedQuoteMsg.stop().fadeIn(1);
             _confirmUpdatedQuoteMsg.text('The quote was updated successfully.');
             _confirmUpdatedQuoteMsg.attr('class', 'text-success');
             $('#selectedQuoteId').val('');
             $('#editQuoteForm').hide();
         } else {
+            _confirmUpdatedQuoteMsg.stop().fadeIn(1);
             _confirmUpdatedQuoteMsg.text('Hmmmm, there was a problem updating the quote.');
             _confirmUpdatedQuoteMsg.attr('class', 'text-danger');
         }
@@ -390,6 +399,37 @@
             _quoteRankMsg.text('Hmmmm, there was a problem loading the most liked quotes.');
             _quoteRankMsg.attr('class', 'text-danger');
             _quoteRankMsg.fadeOut(10000);     
+        }
+    });
+
+    $(document).on('click', '.btn-close', async function () {
+        // get the current quote id and tag id
+        const quoteId = $('#selectedQuoteId').val();
+        const tagName = $(this).closest('span').data('tag-name');
+
+        const urlWithId = _removeTagWithQuoteUrl.replace('{quoteId}', quoteId).replace('{tagName}', tagName)
+        console.log(urlWithId);
+
+        let resp = await fetch(urlWithId, {
+            mode: "cors",
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (resp.status === 200) {
+            $(this).closest('span').remove();
+
+            _confirmUpdatedQuoteMsg.stop().fadeIn(1);
+            _confirmUpdatedQuoteMsg.text('The tag was deleted successfully.');
+            _confirmUpdatedQuoteMsg.attr('class', 'text-success');
+            _confirmUpdatedQuoteMsg.fadeOut(2000);
+        } else {
+            _confirmUpdatedQuoteMsg.stop().fadeIn(1);
+            _confirmUpdatedQuoteMsg.text('Hmmm, there was a problem to delete the tag.');
+            _confirmUpdatedQuoteMsg.attr('class', 'text-danger');
+            _confirmUpdatedQuoteMsg.fadeOut(2000);
         }
     });
 
