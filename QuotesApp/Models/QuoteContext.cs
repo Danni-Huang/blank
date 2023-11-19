@@ -108,14 +108,24 @@ namespace QuotesApp.Models
                 );
 
             modelBuilder.Entity<Like>().HasData(
-            new Like { LikeId = 1, UserId = 123, QuoteId = 8 },
-            new Like { LikeId = 2, UserId = 123, QuoteId = 8 },
-            new Like { LikeId = 3, UserId = 123, QuoteId = 8 },
-            new Like { LikeId = 4, UserId = 123, QuoteId = 8 },
-            new Like { LikeId = 5, UserId = 123, QuoteId = 2 },
-            new Like { LikeId = 6, UserId = 123, QuoteId = 2 },
-            new Like { LikeId = 7, UserId = 123, QuoteId = 4 }
-            );
+                new Like { LikeId = 1, UserId = 123, QuoteId = 8 },
+                new Like { LikeId = 2, UserId = 123, QuoteId = 8 },
+                new Like { LikeId = 3, UserId = 123, QuoteId = 8 },
+                new Like { LikeId = 4, UserId = 123, QuoteId = 8 },
+                new Like { LikeId = 5, UserId = 123, QuoteId = 2 },
+                new Like { LikeId = 6, UserId = 123, QuoteId = 2 },
+                new Like { LikeId = 7, UserId = 123, QuoteId = 4 }
+                );
+
+            modelBuilder.Entity<TagAssignment>().HasData(
+               new TagAssignment { QuoteId = 8, TagId = 1 },
+               new TagAssignment { QuoteId = 10, TagId = 2 },
+               new TagAssignment { QuoteId = 9, TagId = 3 },
+               new TagAssignment { QuoteId = 5, TagId = 4 },
+               new TagAssignment { QuoteId = 3, TagId = 5 },
+               new TagAssignment { QuoteId = 2, TagId = 2 },
+               new TagAssignment { QuoteId = 4, TagId = 3 }
+               );
 
         }
 

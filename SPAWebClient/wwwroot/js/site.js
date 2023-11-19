@@ -9,6 +9,8 @@
     let _existingTags = $('#existingTags');
     let _quotesByTag = $('#quotesByTag');
 
+    let _tagsCache = {}
+
     let _quotesLastModified = new Date(1970, 0, 1);
 
     let _quotesApiHome = 'https://localhost:7014/quote-api';
@@ -56,15 +58,17 @@
         const resp = await fetch(_tagsUrl, {
             mode: 'cors',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache',
             }
         });
         
         if (resp.status === 200) {
             const tags = await resp.json();
-            console.log(tags)
             for (let i = 0; i < tags.length; i++) {          
-                _quoteTag.append(`<option value=\"${tags[i].tagId}\">${tags[i].name}</option>`);
+                //_quoteTag.append(`<option value=\"${tags[i].tagId}\">${tags[i].name}</option>`);
+                _tagsCache[tags[i].name] = tags[i].tagId;
+                _quoteTag.append(`<option value=\"${tags[i].name}\"></option>`);
             }
         } else {
             _quoteItemsMsg.text('Hmmmm, there was a problem accessing the quotes tags.');
@@ -135,11 +139,13 @@
         });
 
         if (resp.status === 201) {
+            _newQuoteMsg.stop().fadeIn(1);
             _newQuoteMsg.text('The quote was added successfully.');
             _newQuoteMsg.attr('class', 'text-success');
             $('#quoteContent').val('')
             $('#quoteAuthor').val('')
         } else {
+            _newQuoteMsg.stop().fadeIn(1);
             _newQuoteMsg.text('Hmmm, there was a problem adding the quotes.');
             _newQuoteMsg.attr('class', 'text-danger');
         }
@@ -163,10 +169,13 @@
         });
 
         if (resp.status === 201) {
+            _newTagMsg.stop().fadeIn(1);
             _newTagMsg.text('The tag was added successfully.');
             _newTagMsg.attr('class', 'text-success');
             $('#tagName').val('')
+            loadTags();
         } else {
+            _newTagMsg.stop().fadeIn(1);
             _newTagMsg.text('Hmmm, there was a problem adding the tags.');
             _newTagMsg.attr('class', 'text-danger');
         }
@@ -177,6 +186,7 @@
     // add a click handler to show edit quote form:
     $('#editQuoteBtn').click(async function () {
         const selectedQuoteId = $('#selectedQuoteId').val();
+        $('#txtAddTag').val("");
 
         if (selectedQuoteId) {
             const urlWithId = _quoteByIdUrl.replace('{id}', selectedQuoteId);
@@ -213,7 +223,9 @@
 
         const updatedContent = $('#editQuoteContent').val();
         const updatedAuthor = $('#editQuoteAuthor').val();
-        const updatedTagId = $('#quoteTagForEditQuote option:selected').val();
+        //const updatedTagId = $('#quoteTagForEditQuote option:selected').val();
+        const selectTagName = $('#txtAddTag').val();
+        const selectTagId = _tagsCache[selectTagName];
 
         const requestBody = JSON.stringify({
             content: updatedContent,
@@ -230,7 +242,7 @@
         });
 
         if (response.ok) {
-            const url = _tagQuoteUrl.replace('{quoteId}', selectedQuoteId).replace('{tagId}', updatedTagId)
+            const url = _tagQuoteUrl.replace('{quoteId}', selectedQuoteId).replace('{tagId}', selectTagId)
             const response = await fetch(url, {
                 mode: "cors",
                 method: 'POST',
@@ -363,11 +375,13 @@
         }
     });
 
-    $('#selectTagBtn').click(async function () {
+    $('#searchQuoteByTagBtn').click(async function () {
         let _quotesLastModified = new Date(1970, 0, 1);
-        const selectTag = $('#quoteTag option:selected').val();
+        //const selectTag = $('#quoteTag option:selected').val();
+        const selectTagName = $('#txtGetTag').val();
+        const selectTagId = _tagsCache[selectTagName];
 
-        const resp = await fetch(_quotesUrl + '?tagId=' + selectTag, {
+        const resp = await fetch(_quotesUrl + '?tagId=' + selectTagId, {
             mode: "cors",
             headers: {
                 'Accept': 'application/json'
@@ -379,7 +393,7 @@
             let quotes = quotesResult.quotes;
 
             let latestLastModified = new Date(quotesResult.quotesLastModified);
-
+            console.log(quotesResult)
             _quotesByTag.empty();
 
             if (latestLastModified.getTime() > _quotesLastModified.getTime()) {
@@ -396,7 +410,7 @@
             }
         }
         else {
-            _quoteRankMsg.text('Hmmmm, there was a problem loading the most liked quotes.');
+            _quoteRankMsg.text('Hmmmm, there was a problem loading the quotes by tag.');
             _quoteRankMsg.attr('class', 'text-danger');
             _quoteRankMsg.fadeOut(10000);     
         }

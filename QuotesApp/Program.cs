@@ -18,8 +18,10 @@ builder.Services.AddDbContext<QuoteContext>(options =>
 builder.Services.AddControllersWithViews();
 
 // Add CORS support, first here as a DI service:
-builder.Services.AddCors(options => {
-    options.AddPolicy("AllowQuoteClients", policy => {
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowQuoteClients", policy =>
+    {
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });

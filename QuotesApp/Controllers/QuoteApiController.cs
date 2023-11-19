@@ -96,7 +96,10 @@ namespace QuotesApp.Controllers
                     QuoteId = q.QuoteId,
                     Content = q.Content,
                     Author = q.Author,
-                    Likes = q.Likes.ToList().Count()
+                    Likes = q.Likes.ToList().Count(),
+                    Tags = q.TagAssignments != null
+                        ? q.TagAssignments.Where(ta => ta != null && ta.Tag != null && ta.Tag.Name != null).Select(ta => ta.Tag.Name).ToList()
+                        : new List<string>()
                 }).ToList();
 
                 var tags = await _quoteContext.Tags.Select(t => t.Name).ToListAsync();
@@ -155,6 +158,12 @@ namespace QuotesApp.Controllers
             if (newQuoteRequest.Author == null || String.IsNullOrEmpty(newQuoteRequest.Author))
             {
                 newQuoteRequest.Author = "Anonymous";
+            }
+
+            Quote existingQuote = _quoteContext.Quotes.FirstOrDefault(q => q.Content == newQuoteRequest.Content);
+            if (existingQuote != null)
+            {
+                return BadRequest("The quote is already exist.");
             }
 
             Quote quote = new Quote()
@@ -222,6 +231,12 @@ namespace QuotesApp.Controllers
         [HttpPost("/tags")]
         public async Task<IActionResult> AddNewTag([FromBody] NewTagRequest newTagRequest)
         {
+            Tag existingTag = _quoteContext.Tags.FirstOrDefault(t => t.Name == newTagRequest.Name);
+            if (existingTag != null)
+            {
+                return BadRequest("The tag is already exist.");
+            }
+
             Tag tag = new Tag()
             {
                 Name = newTagRequest.Name
@@ -343,6 +358,8 @@ namespace QuotesApp.Controllers
                 QuoteId = quoteId,
                 TagId = tagId
             };
+
+            quote.LastModified = DateTime.Now;
 
             // add TagAssignment to the context
             _quoteContext.TagAssignments.Add(tagAssignment);

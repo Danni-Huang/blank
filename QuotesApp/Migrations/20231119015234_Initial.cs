@@ -103,16 +103,16 @@ namespace QuotesApp.Migrations
                 columns: new[] { "QuoteId", "Author", "Content", "LastModified" },
                 values: new object[,]
                 {
-                    { 1, "John Wooden", "Things work out best for those who make the best of how things work out.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(444) },
-                    { 2, "Jim Rohn", "If you are not willing to risk the usual you will have to settle for the ordinary.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(542) },
-                    { 3, "Walt Disney", "All our dreams can come true if we have the courage to pursue them.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(546) },
-                    { 4, "Winston Churchill", "Success is walking from failure to failure with no loss of enthusiasm.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(549) },
-                    { 5, "Proverb", "Just when the caterpillar thought the world was ending, he turned into a butterfly.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(552) },
-                    { 6, "Chris Grosser", "Opportunities don't happen, you create them.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(555) },
-                    { 7, "Winston Churchill", "If you're going through hell keep going.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(557) },
-                    { 8, "Anonymous", "Don't raise your voice, improve your argument.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(560) },
-                    { 9, "Anonymous", "Do one thing every day that scares you.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(563) },
-                    { 10, "Lolly Daskal", "Life is not about finding yourself. Life is about creating yourself.", new DateTime(2023, 11, 16, 22, 13, 31, 584, DateTimeKind.Local).AddTicks(566) }
+                    { 1, "John Wooden", "Things work out best for those who make the best of how things work out.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3486) },
+                    { 2, "Jim Rohn", "If you are not willing to risk the usual you will have to settle for the ordinary.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3607) },
+                    { 3, "Walt Disney", "All our dreams can come true if we have the courage to pursue them.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3610) },
+                    { 4, "Winston Churchill", "Success is walking from failure to failure with no loss of enthusiasm.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3613) },
+                    { 5, "Proverb", "Just when the caterpillar thought the world was ending, he turned into a butterfly.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3615) },
+                    { 6, "Chris Grosser", "Opportunities don't happen, you create them.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3617) },
+                    { 7, "Winston Churchill", "If you're going through hell keep going.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3620) },
+                    { 8, "Anonymous", "Don't raise your voice, improve your argument.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3622) },
+                    { 9, "Anonymous", "Do one thing every day that scares you.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3625) },
+                    { 10, "Lolly Daskal", "Life is not about finding yourself. Life is about creating yourself.", new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3627) }
                 });
 
             migrationBuilder.InsertData(
@@ -139,6 +139,20 @@ namespace QuotesApp.Migrations
                     { 5, 2, 123 },
                     { 6, 2, 123 },
                     { 7, 4, 123 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TagAssignments",
+                columns: new[] { "QuoteId", "TagId" },
+                values: new object[,]
+                {
+                    { 2, 2 },
+                    { 3, 5 },
+                    { 4, 3 },
+                    { 5, 4 },
+                    { 8, 1 },
+                    { 9, 3 },
+                    { 10, 2 }
                 });
 
             migrationBuilder.CreateIndex(
