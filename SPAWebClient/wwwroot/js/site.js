@@ -8,6 +8,7 @@
     let _quoteRankMsg = $('#quoteRankMsg');
     let _existingTags = $('#existingTags');
     let _quotesByTag = $('#quotesByTag');
+    let _tagMsg = $('#tagMsg');
 
     let _tagsCache = {}
 
@@ -408,11 +409,18 @@
                     `);
                 }
             }
+
+            if (quotes.length == 0) {
+                _tagMsg.stop().fadeIn(1);
+                _tagMsg.text('Hmmmm, there is no quote with this tag.');
+                _tagMsg.attr('class', 'text-danger');
+                _tagMsg.fadeOut(10000);   
+            }
         }
         else {
-            _quoteRankMsg.text('Hmmmm, there was a problem loading the quotes by tag.');
-            _quoteRankMsg.attr('class', 'text-danger');
-            _quoteRankMsg.fadeOut(10000);     
+            _tagMsg.text('Hmmmm, there was a problem loading the quotes by tag.');
+            _tagMsg.attr('class', 'text-danger');
+            _tagMsg.fadeOut(10000);     
         }
     });
 

@@ -65,18 +65,18 @@ def post_new_quote(quote):
 	if resp.ok:
 		return True
 	else:
+		print(str(resp.content))
 		return False
 
 def display_ramdomly_selected_quote(quotes):
-	if not quotes:
+	if len(quotes) == 0:
 		print("No quotes available.")
 		return
 
-	random_quote = random.choice(quotes)
+	index = random.randint(0, len(quotes) - 1)
 	print('Random Quote:')
-	print(f'Content: {random_quote["content"]}')
-	print(f'Author: {random_quote["author"]}')
-
+	print('Content: ' + quotes[index]['content'])
+	print('Author: ' + quotes[index]['author'])
 
 def get_all_quotes():
 	url = 'https://localhost:7014/quotes'
@@ -114,5 +114,5 @@ if index == 0:
 elif index == 1:
 	option_post_new_quote()
 elif index == 2:
-	quotes = read_quotes_from_file('data/quotes.txt')
-	display_ramdomly_selected_quote(quotes)
+	data = get_all_quotes()
+	display_ramdomly_selected_quote(data['quotes'])
