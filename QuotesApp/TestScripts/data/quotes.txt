@@ -1,4 +1,4 @@
-﻿"A successful man is one who makes more money than his wife can spend. A successful woman is one who can find such a man." -- Lana Turner
-"Roses are red, violets are blue, I'm schizophrenic, and so am I." -- Oscar Levant
-"If Barbie is so popular, why do you have to buy her friends?" -- Steven Wright
-"Facts are stupid things." -- Ronald Reagan, Former U.S. President
+﻿A successful man is one who makes more money than his wife can spend. A successful woman is one who can find such a man.|Lana Turner
+Roses are red, violets are blue, I'm schizophrenic, and so am I.|Oscar Levant
+If Barbie is so popular, why do you have to buy her friends?|Steven Wright
+Facts are stupid things.|Ronald Reagan, Former U.S. President

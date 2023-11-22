@@ -47,8 +47,9 @@ namespace QuotesApp.Controllers
             {
                 // get all quotes without filtering by tag
                 var quotes = await _quoteContext.Quotes
-                    .Include(t => t.TagAssignments)
                     .Include(t => t.Likes)
+                    .Include(t => t.TagAssignments)
+                    .ThenInclude(ta => ta.Tag)                 
                     .ToListAsync();
 
                 List<QuotesResponse> quotesResponse = quotes.Select(q => new QuotesResponse
@@ -274,11 +275,10 @@ namespace QuotesApp.Controllers
                 QuoteId = id
             };
 
-            _quoteContext.Add(newLike);
+            _quoteContext.Like.Add(newLike);
             await _quoteContext.SaveChangesAsync();
 
-            // return CreatedAtAction(nameof(GetQuoteRank), new { id = newLike.LikeId }, newLike);
-            return Ok();
+            return CreatedAtAction(nameof(GetQuoteRank), new { id = newLike.LikeId }, newLike);
         }
 
         // this function is return the most liked quotes, default is 10

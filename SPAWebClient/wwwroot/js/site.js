@@ -78,7 +78,7 @@
         }
     };
 
-    let loadQuotes = async function () {
+    let loadQuotes = async function (forceRefresh = false) {
         // call out to web api using fetch (enabling CORS) to get our quotes:
         let resp = await fetch(_quotesUrl, {
             mode: "cors",
@@ -98,7 +98,6 @@
 
                 if (latestLastModified.getTime() > _quotesLastModified.getTime()) {
                     _quotesLastModified = latestLastModified;
-
                     // loop through the quotes and add them to the UL list:
                     _quotesList.empty();
 
@@ -106,9 +105,20 @@
                         _quotesList.append(`
                         <li data-quote-id="${quotes[i].quoteId}">
                         "${quotes[i].content}" (<b>ID:${quotes[i].quoteId}</b>) The author is: ${quotes[i].author} 
-                        <button class="thumb-up-btn">👍 Like</button></li>`);
+                         The tag: ${quotes[i].tags}<button class="thumb-up-btn">👍 Like</button> ${quotes[i].likes}</li>`);
                     }
-                }        
+                } else {
+                    if (forceRefresh) {
+                        _quotesList.empty();
+
+                        for (let i = 0; i < quotes.length; i++) {
+                            _quotesList.append(`
+                        <li data-quote-id="${quotes[i].quoteId}">
+                        "${quotes[i].content}" (<b>ID:${quotes[i].quoteId}</b>) The author is: ${quotes[i].author} 
+                         The tag: ${quotes[i].tags}<button class="thumb-up-btn">👍 Like</button> ${quotes[i].likes}</li>`);
+                        }
+                    }
+                }     
             }
 
             // _quoteItemsMsg.text('# quote is: ' + quotes.length);   
@@ -271,7 +281,6 @@
         // get the current quote id
         const quoteId = $(this).closest('li').data('quote-id');
         const urlWithId = _likeUrl.replace('{id}', quoteId);
-        console.log(quoteId);
 
         let newLike = {
             // TODO: will change it in assignment 4
@@ -288,10 +297,11 @@
             body: JSON.stringify(newLike)
         });      
 
-        if (resp.status === 204 || resp.status === 200) {
+        if (resp.status === 201) {
+            await loadQuotes(true);
             _quoteItemsMsg.stop().fadeIn(1);
             _quoteItemsMsg.text('Thumb up on Quote ID: ' + quoteId + '!');
-            _quoteItemsMsg.attr('class', 'text-success'); 
+            _quoteItemsMsg.attr('class', 'text-success');
             _quoteItemsMsg.fadeOut(2000);
         } else {
             _quoteItemsMsg.stop().fadeIn(1);
@@ -306,7 +316,6 @@
         let _quotesLastModified = new Date(1970, 0, 1);
         let nums = $('#numsMostLikedQuotes').val();
         let resp = null;
-        console.log("nums", nums);
         if (nums) {
             resp = await fetch(_quotesByRankUrl + '?limit=' + nums, {
                 mode: "cors",
@@ -329,9 +338,9 @@
 
                     for (let i = 0; i < nums; i++) {
                         _mostLikedQuotesList.append(`
-                <li data-quote-id="${quotes[i].quoteId}">
-                "${quotes[i].content}" (ID:${quotes[i].quoteId}) The author is: ${quotes[i].author} 
-                <b>Likes:</b> ${quotes[i].likes}`);
+                            <li data-quote-id="${quotes[i].quoteId}">
+                            "${quotes[i].content}" (ID:${quotes[i].quoteId}) The author is: ${quotes[i].author} 
+                            <b>Likes:</b> ${quotes[i].likes}`);
                     }
                 }
             }
@@ -430,7 +439,6 @@
         const tagName = $(this).closest('span').data('tag-name');
 
         const urlWithId = _removeTagWithQuoteUrl.replace('{quoteId}', quoteId).replace('{tagName}', tagName)
-        console.log(urlWithId);
 
         let resp = await fetch(urlWithId, {
             mode: "cors",
