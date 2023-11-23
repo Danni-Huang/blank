@@ -100,22 +100,58 @@
                     _quotesLastModified = latestLastModified;
                     // loop through the quotes and add them to the UL list:
                     _quotesList.empty();
-
+                   
                     for (let i = 0; i < quotes.length; i++) {
-                        _quotesList.append(`
-                        <li data-quote-id="${quotes[i].quoteId}">
-                        "${quotes[i].content}" (<b>ID:${quotes[i].quoteId}</b>) The author is: ${quotes[i].author} 
-                         The tag: ${quotes[i].tags}<button class="thumb-up-btn">👍 Like</button> ${quotes[i].likes}</li>`);
+                        let quotesLinks = $(`
+                            <li data-quote-id="${quotes[i].quoteId}">
+                                "${quotes[i].content}" (<b>ID:${quotes[i].quoteId}</b>) The author is: ${quotes[i].author}. 
+                                The tag: ${quotes[i].tags}.<button class="thumb-up-btn">👍 Like</button> ${quotes[i].likes}
+                            </li>`);
+                       
+                        quotesLinks.click(function () {
+                            _existingTags.empty();
+                            $('#txtAddTag').val("");
+                            for (const tag of quotes[i].tags) {
+                                _existingTags.append(`<span data-tag-name="${tag}" class="badge bg-success">${tag} 
+                                            <button type="button" class="btn-close" aria-label="Close" style="color: white;"></button>
+                                            </span>`)
+                            }
+                            $('#selectedQuoteId').val(quotes[i].quoteId);
+                            $('#editQuoteContent').val(quotes[i].content);
+                            $('#editQuoteAuthor').val(quotes[i].author);
+                            loadTags('#quoteTagForEditQuote');
+                            $('#editQuoteForm').show();
+                        });
+
+                        _quotesList.append(quotesLinks);
                     }
                 } else {
                     if (forceRefresh) {
                         _quotesList.empty();
 
                         for (let i = 0; i < quotes.length; i++) {
-                            _quotesList.append(`
-                        <li data-quote-id="${quotes[i].quoteId}">
-                        "${quotes[i].content}" (<b>ID:${quotes[i].quoteId}</b>) The author is: ${quotes[i].author} 
-                         The tag: ${quotes[i].tags}<button class="thumb-up-btn">👍 Like</button> ${quotes[i].likes}</li>`);
+                            let quotesLinks = $(`
+                            <li data-quote-id="${quotes[i].quoteId}">
+                                "${quotes[i].content}" (<b>ID:${quotes[i].quoteId}</b>) The author is: ${quotes[i].author}. 
+                                The tag: ${quotes[i].tags}.<button class="thumb-up-btn">👍 Like</button> ${quotes[i].likes}
+                            </li>`);
+
+                            quotesLinks.click(function () {
+                                _existingTags.empty();
+                                $('#txtAddTag').val("");
+                                for (const tag of quotes[i].tags) {
+                                    _existingTags.append(`<span data-tag-name="${tag}" class="badge bg-success">${tag} 
+                                            <button type="button" class="btn-close" aria-label="Close" style="color: white;"></button>
+                                            </span>`)
+                                }
+                                $('#selectedQuoteId').val(quotes[i].quoteId);
+                                $('#editQuoteContent').val(quotes[i].content);
+                                $('#editQuoteAuthor').val(quotes[i].author);
+                                loadTags('#quoteTagForEditQuote');
+                                $('#editQuoteForm').show();
+                            });
+
+                            _quotesList.append(quotesLinks);
                         }
                     }
                 }     

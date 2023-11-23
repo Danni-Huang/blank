@@ -88,6 +88,7 @@ namespace QuotesApp.Controllers
                 // get quotes by a specific tag
                 var quotesByTag = await _quoteContext.Quotes
                     .Include(q => q.TagAssignments)
+                    .ThenInclude(ta => ta.Tag)
                     .Include (q => q.Likes)
                     .Where(q => q.TagAssignments.Any(ta => ta.TagId == tagId))
                     .ToListAsync();

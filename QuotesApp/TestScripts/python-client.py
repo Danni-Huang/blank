@@ -19,27 +19,6 @@ def get_tags(tags_url):
 	resp = requests.get(tags_url, verify=False)
 	return resp.json()
 
-def read_quotes_from_file(file_path):
-    quotes = []
-
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-
-        for line in lines:
-            # Split the line into content and author using '--'
-            parts = line.strip().split('--')
-
-            if len(parts) == 2:
-                content = parts[0].strip().replace("\"", "")
-                author = parts[1].strip()
-                quote = {
-					"content": content,
-					"author": author
-				}
-                quotes.append(quote)
-
-    return quotes
-
 def option_post_new_quote(quotes_url, quote_tags):
 	quote_content = input('What is the content of the quote? ')
 	quote_author = input('What is the author of the quote? ')
@@ -60,6 +39,7 @@ def add_new_quote(quotes_url, quote_content, quote_author, quote_tag):
 	headers = {
 		'Content-Type': 'application/json'
 	}
+
 	new_quote = {
 		'content': quote_content,
 		'author': quote_author,
@@ -68,11 +48,11 @@ def add_new_quote(quotes_url, quote_content, quote_author, quote_tag):
 
 	resp = requests.post(quotes_url, headers=headers, json=new_quote, verify=False)
 
-	if resp.status_code == 201:
-		return resp.status_code == 201 and 'Location' in resp.headers
-	else:
+	if (resp.status_code != 201):
 		print(str(resp.content))
-		return False
+	else:
+		return resp.status_code == 201 and 'Location' in resp.headers
+
 
 def display_ramdomly_selected_quote(quotes_url):
 	all_quotes = get_all_quotes(quotes_url)
@@ -97,15 +77,18 @@ def get_all_quotes(quotes_url):
 
 def load_quotes(quotes_url):
 	print('Loading quotes...')
-
+	headers = {
+		'Content-Type': 'application/json'
+	}
+	resp = requests.get(quotes_url, headers=headers, verify=False)
 	try:
 		task_file = open('data/quotes.txt', 'r')
 
 		for line in task_file.readlines():
-			# Split the line into content and author using '--'
 			parts = [c.strip() for c in line.split('|')]
 			quote_added_successfully = add_new_quote(quotes_url, parts[0], parts[1], '')	
-		print('Quotes loaded successfully!\n')
+			if (quote_added_successfully):
+				print('Quotes loaded successfully!\n')			
 	except:
 		print('Sorry, there was a problem loading quotes :(\n')
 
@@ -128,3 +111,4 @@ elif index == 1:
 	option_post_new_quote(quotes_url, quote_tags)
 elif index == 2:
 	display_ramdomly_selected_quote(quotes_url)
+
