@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.Logging;
 using QuotesApp.Models;
-using System.Collections.Generic;
-using System.Xml;
 
 
 namespace QuotesApp.Controllers
@@ -12,7 +8,7 @@ namespace QuotesApp.Controllers
     [ApiController]
     public class QuoteApiController : Controller
     {
-        public QuoteApiController(QuoteContext quoteContext) 
+        public QuoteApiController(QuoteContext quoteContext)
         {
             _quoteContext = quoteContext;
         }
@@ -34,7 +30,7 @@ namespace QuotesApp.Controllers
                     { "removeTagWithQuote", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quote/{quoteId}/tag/{tagName}"), Method = "DELETE" } }
                 },
                 Version = "1.0",
-                Creator = "Danni Huang"           
+                Creator = "Danni Huang"
             };
             return Ok(viewModel);
         }
@@ -49,7 +45,7 @@ namespace QuotesApp.Controllers
                 var quotes = await _quoteContext.Quotes
                     .Include(t => t.Likes)
                     .Include(t => t.TagAssignments)
-                    .ThenInclude(ta => ta.Tag)                 
+                    .ThenInclude(ta => ta.Tag)
                     .ToListAsync();
 
                 List<QuotesResponse> quotesResponse = quotes.Select(q => new QuotesResponse
@@ -81,7 +77,7 @@ namespace QuotesApp.Controllers
                 // add last modified to the HTTP last-modified header
                 Response.Headers.LastModified = quoteLastModified?.ToUniversalTime().ToString("R");
 
-                return Ok(viewModel);   
+                return Ok(viewModel);
             }
             else
             {
@@ -89,7 +85,7 @@ namespace QuotesApp.Controllers
                 var quotesByTag = await _quoteContext.Quotes
                     .Include(q => q.TagAssignments)
                     .ThenInclude(ta => ta.Tag)
-                    .Include (q => q.Likes)
+                    .Include(q => q.Likes)
                     .Where(q => q.TagAssignments.Any(ta => ta.TagId == tagId))
                     .ToListAsync();
 
@@ -121,8 +117,8 @@ namespace QuotesApp.Controllers
                 // add last modified to the HTTP last-modified header
                 Response.Headers.LastModified = quoteLastModified?.ToUniversalTime().ToString("R");
 
-                return Ok(viewModel);                  
-            }         
+                return Ok(viewModel);
+            }
         }
 
         [HttpGet("/quotes/{id}")]
@@ -186,7 +182,7 @@ namespace QuotesApp.Controllers
                 Tags = _quoteContext.TagAssignments.Where(ta => ta.QuoteId == quote.QuoteId).Select(ta => ta.Tag.Name).ToList()
             };
 
-            return CreatedAtAction(nameof(GetQuoteById), new {id = quoteResponse.QuoteId}, quoteResponse);
+            return CreatedAtAction(nameof(GetQuoteById), new { id = quoteResponse.QuoteId }, quoteResponse);
         }
 
         [HttpPut("/quotes/{id}")]
@@ -348,7 +344,7 @@ namespace QuotesApp.Controllers
             // check if the tag is already assigned to Quote
             bool tagAlreadyAssigned = await _quoteContext.TagAssignments.AnyAsync(ta => ta.QuoteId == quoteId && ta.TagId == tagId);
 
-            if (tagAlreadyAssigned) 
+            if (tagAlreadyAssigned)
             {
                 return BadRequest("Tag is already assigned to the quote");
             }
@@ -403,7 +399,7 @@ namespace QuotesApp.Controllers
             }
 
             // find tag with quote in TagAssignment
-            TagAssignment tagAssignment = _quoteContext.TagAssignments.FirstOrDefault(ta => ta.QuoteId == quoteId && ta.TagId == tagId);           
+            TagAssignment tagAssignment = _quoteContext.TagAssignments.FirstOrDefault(ta => ta.QuoteId == quoteId && ta.TagId == tagId);
 
             // remove TagAssignment to the context
             _quoteContext.TagAssignments.Remove(tagAssignment);

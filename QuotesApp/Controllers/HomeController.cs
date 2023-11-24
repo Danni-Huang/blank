@@ -15,7 +15,7 @@ namespace QuotesApp.Controllers
         {
             // load current filters and data needed for filter drop down in ViewBag
             // TODO: add filter var
-           
+
             ViewBag.Tag = _quoteContext.Tags.ToList();
 
             // TODO: get all quotes from database based on current filter
@@ -29,7 +29,7 @@ namespace QuotesApp.Controllers
         [HttpGet]
         public ViewResult Add()
         {
-            var quote = new Quote {};  
+            var quote = new Quote { };
             return View(quote);
         }
 

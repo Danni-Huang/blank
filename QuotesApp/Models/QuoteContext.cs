@@ -2,16 +2,16 @@
 
 namespace QuotesApp.Models
 {
-    public class QuoteContext: DbContext
+    public class QuoteContext : DbContext
     {
-        public QuoteContext(DbContextOptions<QuoteContext> options) 
+        public QuoteContext(DbContextOptions<QuoteContext> options)
             : base(options) { }
 
-        public DbSet<Quote> Quotes { get; set;}
-        public DbSet<Like> Like { get; set;}
-        public DbSet<Tag> Tags { get; set;}
-        public DbSet<User> Users { get; set;}
-        public DbSet<TagAssignment> TagAssignments { get; set;}
+        public DbSet<Quote> Quotes { get; set; }
+        public DbSet<Like> Like { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<TagAssignment> TagAssignments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

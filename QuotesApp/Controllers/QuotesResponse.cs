@@ -1,6 +1,4 @@
-﻿using QuotesApp.Models;
-
-namespace QuotesApp.Controllers
+﻿namespace QuotesApp.Controllers
 {
     public class QuotesResponse
     {

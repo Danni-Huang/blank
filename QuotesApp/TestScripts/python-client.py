@@ -12,8 +12,9 @@ def get_api_info():
 
 	quotes_url = result['links']['quotes']['href']
 	tags_url = result['links']['tags']['href']
+	tag_assignment_url = result['links']['tagQuote']['href']
 	
-	return {'quotes_url': quotes_url, 'tags_url': tags_url}
+	return {'quotes_url': quotes_url, 'tags_url': tags_url, 'tag_assignment_url': tag_assignment_url}
 
 def get_tags(tags_url):
 	resp = requests.get(tags_url, verify=False)
@@ -27,7 +28,9 @@ def option_post_new_quote(quotes_url, quote_tags):
 	print(f'Choose your tag. The option are...\n{quote_tag_str}\n')
 	quote_tag_index = int(input('What tag? '))
 
-	quote_added_successfully = add_new_quote(quotes_url, quote_content, quote_author, quote_tags[quote_tag_index - 1])
+	selected_tag = quote_tags[quote_tag_index - 1]
+
+	quote_added_successfully = add_new_quote(quotes_url, quote_content, quote_author, selected_tag)
 
 	if quote_added_successfully:
 		print('The new quote was added successfully!\n')
@@ -42,16 +45,47 @@ def add_new_quote(quotes_url, quote_content, quote_author, quote_tag):
 
 	new_quote = {
 		'content': quote_content,
-		'author': quote_author,
-		'tag': quote_tag
+		'author': quote_author
 	}
 
 	resp = requests.post(quotes_url, headers=headers, json=new_quote, verify=False)
 
-	if (resp.status_code != 201):
-		print(str(resp.content))
+	if resp.status_code == 201:
+		quote_id = int(resp.headers['Location'].split('/')[-1])
+
+		if quote_tag != '':
+			tag_added_successfully = add_tag_to_quote(quotes_url, quote_id, quote_tag)
+			return tag_added_successfully
+		
+		return True
 	else:
-		return resp.status_code == 201 and 'Location' in resp.headers
+		print(str(resp.content))
+		return False
+
+def add_tag_to_quote(quotes_url, quote_id, quote_tag):
+	tag_id = get_tag_id(quotes_url, quote_tag['name'])
+	if tag_id is not None:
+		tag_assignment_url = tag_assignment_url_temp.format(quoteId=quote_id, tagId=tag_id)
+		resp = requests.post(tag_assignment_url, verify=False)
+		if resp.status_code == 200:
+			return True
+		else:
+			print(f'Failed to add tag to quote. {str(resp.content)}')
+	else:
+		print(f'Tag not found: {quote_tag}')
+	return False
+
+def get_tag_id(quotes_url, quote_tag):
+	resp = requests.get(tags_url, verify=False)
+
+	if resp.status_code == 200:
+		tags = resp.json()
+		for tag in tags:
+			if tag['name'] == quote_tag:
+				return tag['tagId']
+	else:
+		print(f'Failed to get tags. {str(resp.content)}')
+	return None
 
 
 def display_ramdomly_selected_quote(quotes_url):
@@ -80,15 +114,16 @@ def load_quotes(quotes_url):
 	headers = {
 		'Content-Type': 'application/json'
 	}
-	resp = requests.get(quotes_url, headers=headers, verify=False)
+	quote_added_successfully = False
 	try:
 		task_file = open('data/quotes.txt', 'r')
 
 		for line in task_file.readlines():
 			parts = [c.strip() for c in line.split('|')]
 			quote_added_successfully = add_new_quote(quotes_url, parts[0], parts[1], '')	
-			if (quote_added_successfully):
-				print('Quotes loaded successfully!\n')			
+
+		if (quote_added_successfully):
+			print('Quotes loaded successfully!\n')			
 	except:
 		print('Sorry, there was a problem loading quotes :(\n')
 
@@ -97,6 +132,7 @@ def load_quotes(quotes_url):
 api_info = get_api_info()
 quotes_url = api_info['quotes_url']
 tags_url = api_info['tags_url']
+tag_assignment_url_temp = api_info['tag_assignment_url']
 
 quote_tags = get_tags(tags_url)
 

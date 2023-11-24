@@ -6,6 +6,6 @@ namespace QuotesApp.Controllers
     {
         [Required(ErrorMessage = "Please enter the quote content.")]
         public string Content { get; set; }
-        public string? Author { get; set;}
+        public string? Author { get; set; }
     }
 }
