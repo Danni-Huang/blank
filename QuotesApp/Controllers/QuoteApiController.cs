@@ -21,14 +21,16 @@ namespace QuotesApp.Controllers
             {
                 Links = new Dictionary<string, Link>()
                 {
-                    { "self", new Link() { Rel = "self", Href = GnerateFullUrl("/quote-api") } },
-                    { "quotes", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes") } },
-                    { "quoteById", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes/{id}") } },
-                    { "tags", new Link() { Rel = "tags", Href = GnerateFullUrl("/tags") } },
-                    { "like", new Link() { Rel = "like", Href = GnerateFullUrl("/quote/{id}/like"), Method = "POST" } },
-                    { "quotesByRank", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quotes/rank") } },
-                    { "tagQuote", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quote/{quoteId}/tag/{tagId}"), Method = "POST" } },
-                    { "removeTagWithQuote", new Link() { Rel = "quotes", Href = GnerateFullUrl("/quote/{quoteId}/tag/{tagName}"), Method = "DELETE" } }
+                    { "self", new Link() { Rel = "self", Href = GenerateFullUrl("/quote-api") } },
+                    { "quotes", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quotes") } },
+                    { "quoteById", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quotes/{id}") } },
+                    { "tags", new Link() { Rel = "tags", Href = GenerateFullUrl("/tags") } },
+                    { "like", new Link() { Rel = "like", Href = GenerateFullUrl("/quote/{id}/like"), Method = "POST" } },
+                    { "quotesByRank", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quotes/rank") } },
+                    { "tagQuote", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quote/{quoteId}/tag/{tagId}"), Method = "POST" } },
+                    { "removeTagWithQuote", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quote/{quoteId}/tag/{tagName}"), Method = "DELETE" } },
+                    { "register", new Link() { Rel = "register", Href = GenerateFullUrl("/api/register"), Method = "POST" } },
+                    { "login", new Link() { Rel = "login", Href = GenerateFullUrl("/api/login"), Method = "POST" } },
                 },
                 Version = "1.0",
                 Creator = "Danni Huang"
@@ -419,7 +421,7 @@ namespace QuotesApp.Controllers
             return Ok();
         }
 
-        private string GnerateFullUrl(string path)
+        private string GenerateFullUrl(string path)
         {
             return $"{Request.Scheme}://{Request.Host}{path}";
         }

@@ -32,6 +32,22 @@ namespace QuotesApp.Controllers
             }
         }
 
+        [HttpPost("/api/login")]
+        public async Task<IActionResult> LoginUser(LoginRequest loginRequest)
+        {
+            bool loginSuccess = await _authService.LoginUser(loginRequest);
+
+            if (loginSuccess)
+            {
+                return Ok(new { Token = await _authService.CreateToken() });
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+        }
+
         private IAuthService _authService;
     }
 }

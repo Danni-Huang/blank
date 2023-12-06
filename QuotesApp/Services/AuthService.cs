@@ -10,9 +10,10 @@ namespace QuotesApp.Services
 {
     public class AuthService : IAuthService
     {
-        public AuthService(UserManager<User> userManager)
+        public AuthService(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task<IdentityResult> RegisterUser(UserRegistrationRequest userRestrationRequest)
