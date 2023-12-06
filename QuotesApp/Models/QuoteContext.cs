@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using QuotesApp.Models.Configuration;
 
 namespace QuotesApp.Models
 {
-    public class QuoteContext : DbContext
+    public class QuoteContext : IdentityDbContext<User>
     {
         public QuoteContext(DbContextOptions<QuoteContext> options)
             : base(options) { }
@@ -15,6 +17,12 @@ namespace QuotesApp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // call base class version to init Identity tables:
+            base.OnModelCreating(modelBuilder);
+
+            // apply our custom role configuration:
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+
             modelBuilder.Entity<Quote>().Property(q => q.Content).IsRequired();
 
             modelBuilder.Entity<Quote>().HasMany(q => q.Likes)

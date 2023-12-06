@@ -1,11 +1,15 @@
 using Microsoft.EntityFrameworkCore;
+using QuotesApp.Extensions;
 using QuotesApp.Models;
+using QuotesApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<QuoteContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("QuoteContext")));
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // configure json serializer to use reference handling
 // this Preserve format Json as $id and $values
@@ -16,6 +20,11 @@ builder.Services.AddDbContext<QuoteContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// use our service extensions methods:
+builder.Services.ConfigureCors();
+builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJwtAuthentication(builder.Configuration);
 
 // Add CORS support, first here as a DI service:
 builder.Services.AddCors(options =>
@@ -43,7 +52,9 @@ app.UseRouting();
 
 // and finally say that we are using CORS here specifying the CORS policy by name:
 app.UseCors("AllowQuoteClients");
+app.UseCors("QuoteApiCorsPolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

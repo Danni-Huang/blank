@@ -1,9 +1,12 @@
-﻿namespace QuotesApp.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace QuotesApp.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int UserId { get; set; }
-        public string Name { get; set; }
+        public string? FirstName { get; set; }
+
+        public string? LastName { get; set; }
 
     }
 }

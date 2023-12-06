@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using QuotesApp.Models;
 
@@ -37,6 +38,7 @@ namespace QuotesApp.Controllers
 
 
         [HttpGet("/quotes")]
+        [Authorize()]
         public async Task<IActionResult> GetAllQuotes([FromQuery(Name = "tagId")] int? tagId)
         {
             if (tagId == null)
@@ -122,6 +124,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpGet("/quotes/{id}")]
+        [Authorize()]
         public async Task<IActionResult> GetQuoteById(int id)
         {
             // Using the Where method to filter to the specific quote by ID...
@@ -146,6 +149,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpPost("/quotes")]
+        [Authorize()]
         public async Task<IActionResult> AddNewQuote([FromBody] NewQuoteRequest newQuoteRequest)
         {
             if (newQuoteRequest == null)
@@ -186,6 +190,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpPut("/quotes/{id}")]
+        [Authorize()]
         public async Task<IActionResult> EditQuoteById(int id, [FromBody] NewQuoteRequest newQuoteRequest)
         {
             Quote existingQuote = await _quoteContext.Quotes.FirstOrDefaultAsync(a => a.QuoteId == id);
@@ -214,6 +219,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpGet("/tags")]
+        [Authorize()]
         public async Task<IActionResult> GetAllTags()
         {
             List<TagsResponse> tags = await _quoteContext.Tags
@@ -227,6 +233,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpPost("/tags")]
+        [Authorize()]
         public async Task<IActionResult> AddNewTag([FromBody] NewTagRequest newTagRequest)
         {
             Tag existingTag = _quoteContext.Tags.FirstOrDefault(t => t.Name == newTagRequest.Name);
@@ -253,6 +260,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpPost("/quote/{id}/like")]
+        [Authorize()]
         public async Task<IActionResult> AddLike(int id)
         {
             Quote quote = await _quoteContext.Quotes.FirstOrDefaultAsync(q => q.QuoteId == id);
@@ -280,6 +288,7 @@ namespace QuotesApp.Controllers
 
         // this function is return the most liked quotes, default is 10
         [HttpGet("/quotes/rank")]
+        [Authorize()]
         public async Task<IActionResult> GetQuoteRank([FromQuery] int limit = 10)
         {
             List<QuotesResponse> topLikedQuotes = await _quoteContext.Quotes
@@ -323,6 +332,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpPost("/quote/{quoteId}/tag/{tagId}")]
+        [Authorize()]
         public async Task<IActionResult> AddTagWithQuote(int quoteId, int tagId)
         {
             // find the quote
@@ -366,6 +376,7 @@ namespace QuotesApp.Controllers
         }
 
         [HttpDelete("/quote/{quoteId}/tag/{tagName}")]
+        [Authorize()]
         public async Task<IActionResult> RemoveTagWithQuote(int quoteId, string tagName)
         {
             // find the quote

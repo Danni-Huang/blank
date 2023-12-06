@@ -22,6 +22,147 @@ namespace QuotesApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "58be86d2-098d-4efe-9276-51217966f60f",
+                            Name = "QuoteManager",
+                            NormalizedName = "QUOTE_MANAGER"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("QuotesApp.Models.Like", b =>
                 {
                     b.Property<int>("LikeId")
@@ -115,70 +256,70 @@ namespace QuotesApp.Migrations
                             QuoteId = 1,
                             Author = "John Wooden",
                             Content = "Things work out best for those who make the best of how things work out.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3486)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7263)
                         },
                         new
                         {
                             QuoteId = 2,
                             Author = "Jim Rohn",
                             Content = "If you are not willing to risk the usual you will have to settle for the ordinary.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3607)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7347)
                         },
                         new
                         {
                             QuoteId = 3,
                             Author = "Walt Disney",
                             Content = "All our dreams can come true if we have the courage to pursue them.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3610)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7350)
                         },
                         new
                         {
                             QuoteId = 4,
                             Author = "Winston Churchill",
                             Content = "Success is walking from failure to failure with no loss of enthusiasm.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3613)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7352)
                         },
                         new
                         {
                             QuoteId = 5,
                             Author = "Proverb",
                             Content = "Just when the caterpillar thought the world was ending, he turned into a butterfly.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3615)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7354)
                         },
                         new
                         {
                             QuoteId = 6,
                             Author = "Chris Grosser",
                             Content = "Opportunities don't happen, you create them.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3617)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7356)
                         },
                         new
                         {
                             QuoteId = 7,
                             Author = "Winston Churchill",
                             Content = "If you're going through hell keep going.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3620)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7358)
                         },
                         new
                         {
                             QuoteId = 8,
                             Author = "Anonymous",
                             Content = "Don't raise your voice, improve your argument.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3622)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7360)
                         },
                         new
                         {
                             QuoteId = 9,
                             Author = "Anonymous",
                             Content = "Do one thing every day that scares you.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3625)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7363)
                         },
                         new
                         {
                             QuoteId = 10,
                             Author = "Lolly Daskal",
                             Content = "Life is not about finding yourself. Life is about creating yourself.",
-                            LastModified = new DateTime(2023, 11, 18, 20, 52, 34, 383, DateTimeKind.Local).AddTicks(3627)
+                            LastModified = new DateTime(2023, 12, 5, 22, 22, 22, 646, DateTimeKind.Local).AddTicks(7365)
                         });
                 });
 
@@ -280,19 +421,124 @@ namespace QuotesApp.Migrations
 
             modelBuilder.Entity("QuotesApp.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
-                    b.ToTable("Users");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("QuotesApp.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("QuotesApp.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QuotesApp.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("QuotesApp.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QuotesApp.Models.Like", b =>
