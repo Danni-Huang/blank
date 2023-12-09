@@ -22,13 +22,13 @@ namespace QuotesApp.Controllers
                 Links = new Dictionary<string, Link>()
                 {
                     { "self", new Link() { Rel = "self", Href = GenerateFullUrl("/quote-api") } },
-                    { "quotes", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quotes") } },
-                    { "quoteById", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quotes/{id}") } },
-                    { "tags", new Link() { Rel = "tags", Href = GenerateFullUrl("/tags") } },
-                    { "like", new Link() { Rel = "like", Href = GenerateFullUrl("/quote/{id}/like"), Method = "POST" } },
-                    { "quotesByRank", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quotes/rank") } },
-                    { "tagQuote", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quote/{quoteId}/tag/{tagId}"), Method = "POST" } },
-                    { "removeTagWithQuote", new Link() { Rel = "quotes", Href = GenerateFullUrl("/quote/{quoteId}/tag/{tagName}"), Method = "DELETE" } },
+                    { "quotes", new Link() { Rel = "quotes", Href = GenerateFullUrl("/api/quotes") } },
+                    { "quoteById", new Link() { Rel = "quotes", Href = GenerateFullUrl("/api/quotes/{id}") } },
+                    { "tags", new Link() { Rel = "tags", Href = GenerateFullUrl("/api/tags") } },
+                    { "like", new Link() { Rel = "like", Href = GenerateFullUrl("/api/quote/{id}/like"), Method = "POST" } },
+                    { "quotesByRank", new Link() { Rel = "quotes", Href = GenerateFullUrl("/api/quotes/rank") } },
+                    { "tagQuote", new Link() { Rel = "quotes", Href = GenerateFullUrl("/api/quote/{quoteId}/tag/{tagId}"), Method = "POST" } },
+                    { "removeTagWithQuote", new Link() { Rel = "quotes", Href = GenerateFullUrl("/api/quote/{quoteId}/tag/{tagName}"), Method = "DELETE" } },
                     { "register", new Link() { Rel = "register", Href = GenerateFullUrl("/api/register"), Method = "POST" } },
                     { "login", new Link() { Rel = "login", Href = GenerateFullUrl("/api/login"), Method = "POST" } },
                 },
@@ -39,7 +39,7 @@ namespace QuotesApp.Controllers
         }
 
 
-        [HttpGet("/quotes")]
+        [HttpGet("/api/quotes")]
         [Authorize()]
         public async Task<IActionResult> GetAllQuotes([FromQuery(Name = "tagId")] int? tagId)
         {
@@ -125,7 +125,7 @@ namespace QuotesApp.Controllers
             }
         }
 
-        [HttpGet("/quotes/{id}")]
+        [HttpGet("/api/quotes/{id}")]
         [Authorize()]
         public async Task<IActionResult> GetQuoteById(int id)
         {
@@ -150,7 +150,7 @@ namespace QuotesApp.Controllers
             return Ok(quote);
         }
 
-        [HttpPost("/quotes")]
+        [HttpPost("/api/quotes")]
         [Authorize()]
         public async Task<IActionResult> AddNewQuote([FromBody] NewQuoteRequest newQuoteRequest)
         {
@@ -191,7 +191,7 @@ namespace QuotesApp.Controllers
             return CreatedAtAction(nameof(GetQuoteById), new { id = quoteResponse.QuoteId }, quoteResponse);
         }
 
-        [HttpPut("/quotes/{id}")]
+        [HttpPut("/api/quotes/{id}")]
         [Authorize()]
         public async Task<IActionResult> EditQuoteById(int id, [FromBody] NewQuoteRequest newQuoteRequest)
         {
@@ -220,7 +220,7 @@ namespace QuotesApp.Controllers
             return Ok(quoteResponse);
         }
 
-        [HttpGet("/tags")]
+        [HttpGet("/api/tags")]
         [Authorize()]
         public async Task<IActionResult> GetAllTags()
         {
@@ -234,7 +234,7 @@ namespace QuotesApp.Controllers
             return Ok(tags);
         }
 
-        [HttpPost("/tags")]
+        [HttpPost("/api/tags")]
         [Authorize()]
         public async Task<IActionResult> AddNewTag([FromBody] NewTagRequest newTagRequest)
         {
@@ -261,7 +261,7 @@ namespace QuotesApp.Controllers
             return CreatedAtAction(nameof(GetAllTags), new { id = tagResponse.TagId }, tagResponse);
         }
 
-        [HttpPost("/quote/{id}/like")]
+        [HttpPost("/api/quote/{id}/like")]
         [Authorize()]
         public async Task<IActionResult> AddLike(int id)
         {
@@ -289,7 +289,7 @@ namespace QuotesApp.Controllers
         }
 
         // this function is return the most liked quotes, default is 10
-        [HttpGet("/quotes/rank")]
+        [HttpGet("/api/quotes/rank")]
         [Authorize()]
         public async Task<IActionResult> GetQuoteRank([FromQuery] int limit = 10)
         {
@@ -333,7 +333,7 @@ namespace QuotesApp.Controllers
             return Ok(viewModel);
         }
 
-        [HttpPost("/quote/{quoteId}/tag/{tagId}")]
+        [HttpPost("/api/quote/{quoteId}/tag/{tagId}")]
         [Authorize()]
         public async Task<IActionResult> AddTagWithQuote(int quoteId, int tagId)
         {
@@ -377,7 +377,7 @@ namespace QuotesApp.Controllers
             return Ok();
         }
 
-        [HttpDelete("/quote/{quoteId}/tag/{tagName}")]
+        [HttpDelete("/api/quote/{quoteId}/tag/{tagName}")]
         [Authorize()]
         public async Task<IActionResult> RemoveTagWithQuote(int quoteId, string tagName)
         {

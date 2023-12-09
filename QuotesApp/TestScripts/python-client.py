@@ -109,7 +109,7 @@ def add_new_quote(quotes_url, access_token, quote_content, quote_author, quote_t
 		result['message'] = 'You are not authorized to do this - please log in first.'
 	else:
 		result['success'] = False
-		result['message'] = 'There was a problem adding the new quote.'
+		result['message'] = 'There was a problem adding the new quote. The quote is already exist.'
 				
 	return result
 
